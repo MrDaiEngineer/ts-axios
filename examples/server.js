@@ -9,13 +9,15 @@ const app = express()
 const compiler = webpack(WebpackConfig)
 const router = express.Router()
 
-app.use(webpackDevMiddleware(compiler, {
-  publicPath: '/__build__/',
-  stats: {
-    colors: true,
-    chunks: false
-  }
-}))
+app.use(
+  webpackDevMiddleware(compiler, {
+    publicPath: '/__build__/',
+    stats: {
+      colors: true,
+      chunks: false
+    }
+  })
+)
 
 app.use(webpackHotMiddleware(compiler))
 
@@ -28,6 +30,17 @@ router.get('/simple/get', function(req, res) {
   res.json({
     msg: `hello world`
   })
+})
+router.get('/base/get', function(req, res) {
+  res.json({
+    result: {
+      name: 'dai',
+      age: 25
+    }
+  })
+})
+router.post('/base/post', function(req, res) {
+  res.json(req.body)
 })
 
 app.use(router)
